@@ -40,7 +40,7 @@ buildscript {
             'ktlint'             : '0.24.0',
             'legacyCoreUtils'    : '1.0.0',
             'lifecycle'          : '2.0.0',
-            'material'           : '1.0.0',
+            'material'           : '1.1.0-alpha02',
             'mockito'            : '2.23.0',
             'mockito_kotlin'     : '2.0.0-RC3',
             'okhttp'             : '3.10.0',

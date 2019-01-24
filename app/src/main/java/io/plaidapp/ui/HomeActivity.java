@@ -87,6 +87,7 @@ import io.plaidapp.core.ui.transitions.FabTransform;
 import io.plaidapp.core.util.Activities;
 import io.plaidapp.core.util.ActivityHelper;
 import io.plaidapp.core.util.AnimUtils;
+import io.plaidapp.core.util.ColorUtils;
 import io.plaidapp.core.util.DrawableUtils;
 import io.plaidapp.core.util.ShortcutHelper;
 import io.plaidapp.core.util.ViewUtils;
@@ -254,7 +255,9 @@ public class HomeActivity extends Activity {
         toolbar = findViewById(R.id.toolbar);
         grid = findViewById(R.id.grid);
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> { fabClick(); });
+        fab.setOnClickListener(view -> {
+            fabClick();
+        });
         filtersList = findViewById(R.id.filters);
         loading = findViewById(android.R.id.empty);
         noConnection = findViewById(R.id.no_connection);
@@ -425,20 +428,20 @@ public class HomeActivity extends Activity {
     // listener for notifying adapter when data sources are deactivated
     private FiltersChangedCallback filtersChangedCallbacks =
             new FiltersChangedCallback() {
-        @Override
-        public void onFiltersChanged(Source changedFilter) {
-            if (!changedFilter.active) {
-                adapter.removeDataSource(changedFilter.key);
-            }
-            checkEmptyState();
-        }
+                @Override
+                public void onFiltersChanged(Source changedFilter) {
+                    if (!changedFilter.active) {
+                        adapter.removeDataSource(changedFilter.key);
+                    }
+                    checkEmptyState();
+                }
 
-        @Override
-        public void onFilterRemoved(Source removed) {
-            adapter.removeDataSource(removed.key);
-            checkEmptyState();
-        }
-    };
+                @Override
+                public void onFilterRemoved(Source removed) {
+                    adapter.removeDataSource(removed.key);
+                    checkEmptyState();
+                }
+            };
 
     private RecyclerView.OnScrollListener toolbarElevation = new RecyclerView.OnScrollListener() {
         @Override
@@ -464,8 +467,8 @@ public class HomeActivity extends Activity {
     protected void fabClick() {
         if (loginRepository.isLoggedIn()) {
             Intent intent = ActivityHelper.intentTo(Activities.DesignerNews.PostStory.INSTANCE);
-            FabTransform.addExtras(intent,
-                    ContextCompat.getColor(this, R.color.accent), R.drawable.ic_add_dark);
+            FabTransform.addExtras(intent, ColorUtils.getThemeColor(
+                    this, R.attr.colorPrimary, -1), R.drawable.ic_add_dark);
             intent.putExtra(PostStoryService.EXTRA_BROADCAST_RESULT, true);
             registerPostStoryResultListener();
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, fab,
@@ -473,8 +476,8 @@ public class HomeActivity extends Activity {
             startActivityForResult(intent, RC_NEW_DESIGNER_NEWS_STORY, options.toBundle());
         } else {
             Intent intent = ActivityHelper.intentTo(Activities.DesignerNews.Login.INSTANCE);
-            FabTransform.addExtras(intent,
-                    ContextCompat.getColor(this, R.color.accent), R.drawable.ic_add_dark);
+            FabTransform.addExtras(intent, ColorUtils.getThemeColor(
+                    this, R.attr.colorPrimary, -1), R.drawable.ic_add_dark);
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, fab,
                     getString(R.string.transition_designer_news_login));
             startActivityForResult(intent, RC_NEW_DESIGNER_NEWS_LOGIN, options.toBundle());
@@ -694,10 +697,10 @@ public class HomeActivity extends Activity {
 
     /**
      * Highlight the new source(s) by:
-     *      1. opening the drawer
-     *      2. scrolling new source(s) into view
-     *      3. flashing new source(s) background
-     *      4. closing the drawer (if user hasn't interacted with it)
+     * 1. opening the drawer
+     * 2. scrolling new source(s) into view
+     * 3. flashing new source(s) background
+     * 4. closing the drawer (if user hasn't interacted with it)
      */
     private void highlightNewSources(final Source... sources) {
         final Runnable closeDrawerRunnable = () -> drawer.closeDrawer(GravityCompat.END);
@@ -768,7 +771,7 @@ public class HomeActivity extends Activity {
 
             connectivityManager.registerNetworkCallback(
                     new NetworkRequest.Builder()
-                    .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build(),
+                            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build(),
                     connectivityCallback);
             monitoringConnectivity = true;
         }
