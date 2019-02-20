@@ -247,6 +247,11 @@ public class HomeActivity extends Activity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(filtersList);
         checkEmptyState();
+
+        int i = 0;
+        if (i>=0){
+
+        }
     }
 
     private void bindResources() {
